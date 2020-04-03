@@ -1,0 +1,36 @@
+### Bulk segregant analysis
+
+### get parental counts from marker pileup files usig script 68c
+/Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph6/gph6_counts.txt
+nice -n 19 perl /Users/sua/Documents/Stig_aarhus/Bioinformatics/scripts/68c_parse.pl /Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph7/20110525_gifu_MG20_SNP_gph7_chr_all_pileup_marker_no_chr.txt /Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph7/gph7_counts.txt
+nice -n 19 perl /Users/sua/Documents/Stig_aarhus/Bioinformatics/scripts/68c_parse.pl /Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph8/20110525_gifu_MG20_SNP_gph8_chr_all_pileup_marker_no_chr.txt /Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph8/gph8_counts.txt
+
+
+
+### combine files for r_input using script 55e
+paste /Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph7/gph7_counts.txt /Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph8/gph8_counts.txt >/Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph7/gph7_gph8_for_r.txt
+
+
+### run r script 90 to calculate p-values for markers being derived from different populations using Fisher’s exact test
+
+### do sliding window analysis using script 89c
+
+### grab one chromsome
+grep ^3 file1 > file2
+
+### plot results in r
+infile = '/Users/sua/Documents/Stig_aarhus/Lab_lists/Journal_files/2011_07_26/gph7/gph7_gph8_r_out_chr3.txt_sliding_400000_20000_0.2.txt'
+data <- read.table(infile)
+plot(data[,2],data[,5],ylim=c(0.5,3.50))
+title(main ="total_p_val (black) and total_allele_diff (red) GPH7/8 chr2")
+lines(data[,2],data[,5])
+points(data[,2],data[,7],col="red")
+lines(data[,2],data[,7],col="red")
+plot(data[,2],data[,9])
+title(main ="passed_p_val * passed_allele_diff GPH7/8 chr2")
+lines(data[,2],data[,9])
+row_min <- which.min(data[,9])
+data[row_min,]
+
+
+
